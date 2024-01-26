@@ -1,8 +1,31 @@
 import RecipeButton from "@/components/button";
+import LoadingSpinner from "@/components/loading-spiner";
 import Link from "next/link";
-import {ReactNode} from "react";
+import {useRouter} from "next/router";
+import {ReactNode, useEffect, useState} from "react";
 
 const PublicLayout = ({children}: {children: ReactNode}) => {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleStart = (url: string) =>
+      url !== router.asPath && setLoading(true);
+    const handleComplete = (url: string) =>
+      url === router.asPath && setLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  });
+
   const headerNavBarItems = [
     {
       title: "Home",
@@ -92,9 +115,16 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
   ];
   return (
     <>
-      <header className="bg-white h-20 border-b-slate-300 border-b flex flex-row items-center justify-center sticky  ">
+      {loading && (
+        <div className="absolute top-1 bottom-0 z-50 left-3">
+          <LoadingSpinner variant="contained" />
+        </div>
+      )}
+      <header className="bg-white h-20 border-b-slate-300 border-b flex flex-row items-center justify-center sticky ">
         <div className="mx-auto w-full max-w-screen-xl px-4  flex flex-row justify-between items-center">
-          <img src="/assets/images/logo.png" alt="" />
+          <Link href={"/"}>
+            <img src="/assets/images/logo.png" alt="" />
+          </Link>
           <nav className=" justify-center gap-x-10 lg:flex hidden">
             {headerNavBarItems.map((headerItem) => (
               <Link
