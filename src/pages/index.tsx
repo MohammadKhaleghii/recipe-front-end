@@ -16,8 +16,6 @@ export default function Home() {
   const muckArrayForSkeleton = new Array(8).fill(0);
   useEffect(() => {
     const searchParams: RecipeSearchParams = {
-      app_id: "d29e7d29",
-      app_key: "a5d799d39df62345f05f8d36489e5953",
       beta: false,
       diet: "balanced",
       imageSize: "LARGE",
