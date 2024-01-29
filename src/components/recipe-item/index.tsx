@@ -6,7 +6,6 @@ const RecipeItem: FC<RecipeHit> = ({_links, recipe}) => {
   const recipeID = _links.self.href.split(
     "https://api.edamam.com/api/recipes/v2/"
   );
-  console.log(recipeID);
 
   return (
     <Link
