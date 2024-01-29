@@ -7,13 +7,13 @@ import {ReactNode, useEffect, useState} from "react";
 const PublicLayout = ({children}: {children: ReactNode}) => {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
+  const [routeChangeLoading, setRouteChangeLoading] = useState(false);
 
   useEffect(() => {
     const handleStart = (url: string) =>
-      url !== router.asPath && setLoading(true);
+      url !== router.asPath && setRouteChangeLoading(true);
     const handleComplete = (url: string) =>
-      url === router.asPath && setLoading(false);
+      url === router.asPath && setRouteChangeLoading(false);
 
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
@@ -115,12 +115,12 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
   ];
   return (
     <>
-      {loading && (
-        <div className="absolute top-1 bottom-0 z-50 left-3">
+      {routeChangeLoading && (
+        <div className="absolute top-1 bottom-0 z-[100] left-3">
           <LoadingSpinner variant="contained" />
         </div>
       )}
-      <header className="bg-white h-20 border-b-slate-300 border-b flex flex-row items-center justify-center sticky ">
+      <header className="bg-white h-20 border-b-slate-300 border-b flex flex-row items-center justify-center sticky top-0 z-50 ">
         <div className="mx-auto w-full max-w-screen-xl px-4  flex flex-row justify-between items-center">
           <Link href={"/"}>
             <img src="/assets/images/logo.png" alt="" />
