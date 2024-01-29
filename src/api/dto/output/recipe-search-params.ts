@@ -12,5 +12,6 @@ export interface RecipeSearchParams extends ParamsBase {
   // cuisineType: CuisineType;
   // mealType: MealType;
   // dishType: DishType;
+  q?: string;
   imageSize: "LARGE" | "REGULAR" | "SMALL" | "THUMBNAIL";
 }
