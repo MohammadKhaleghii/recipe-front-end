@@ -72,6 +72,7 @@ interface Ingredient {
   food: string;
   weight: number;
   foodId: string;
+  image: string;
 }
 
 interface TotalNutrients {}
