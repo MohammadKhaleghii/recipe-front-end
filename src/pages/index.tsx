@@ -6,10 +6,13 @@ import RecipeInput from "@/components/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
+import {useRouter} from "next/router";
 import {ReactElement, useEffect, useState} from "react";
 
 export default function Home() {
+  const router = useRouter();
   const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
+  const [searchedQuery, setSetSearchedQuery] = useState<string>("");
   const muckArrayForSkeleton = new Array(8).fill(0);
   useEffect(() => {
     const searchParams: RecipeSearchParams = {
@@ -41,8 +44,13 @@ export default function Home() {
             Search For Recipe
           </div>
           <div className="flex lg:flex-row flex-col   items-center justify-between gap-x-3 gap-y-3">
-            <RecipeInput width="w-full" placeholder="Enter your title" />
+            <RecipeInput
+              onChange={(event) => setSetSearchedQuery(event.target.value)}
+              width="w-full"
+              placeholder="Enter your title"
+            />
             <RecipeButton
+              onClick={() => router.push(`/search?q=${searchedQuery}`)}
               UIType="primary"
               width="w-full lg:w-fit"
               mainText="Find Recipe"
