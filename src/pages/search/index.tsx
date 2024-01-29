@@ -6,18 +6,20 @@ import RecipeInput from "@/components/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
+import {useRouter} from "next/router";
 import {ReactElement, useEffect, useState} from "react";
 
 const RecipeSearchPage = () => {
+  const router = useRouter();
   const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
 
   const muckArrayForSkeleton = new Array(9).fill(0);
   useEffect(() => {
     const searchParams: RecipeSearchParams = {
       beta: false,
-      diet: "balanced",
       imageSize: "LARGE",
       type: "any",
+      q: router.query.q?.toString() ?? "",
     };
     getRecipeSearch(searchParams)
       .then(({data}) => {
@@ -35,6 +37,7 @@ const RecipeSearchPage = () => {
   const sidebarFilters = [
     {
       title: "Diet",
+      key: 1,
       children: [
         {
           title: "balanced",
@@ -56,6 +59,7 @@ const RecipeSearchPage = () => {
     },
     {
       title: "Health",
+      key: 2,
       children: [
         {
           title: "alcohol-cocktail",
@@ -81,6 +85,7 @@ const RecipeSearchPage = () => {
     },
     {
       title: "Cuisine Type",
+      key: 3,
       children: [
         {
           title: "American",
