@@ -6,6 +6,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   function (config) {
+    config.params = {
+      ...config.params,
+      app_id: "d29e7d29",
+      app_key: "a5d799d39df62345f05f8d36489e5953",
+    };
     return config;
   },
   function (error) {
