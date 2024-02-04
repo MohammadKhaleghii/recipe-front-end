@@ -14,6 +14,10 @@ import {ReactElement, useEffect, useState} from "react";
 import Skeleton from "react-loading-skeleton";
 
 const RecipeDetails = () => {
+  const [recipeDetailsLoading, setRecipeDetailsLoading] =
+    useState<boolean>(true);
+  const [relatedRecipeLoading, setRelatedRecipeLoading] =
+    useState<boolean>(true);
   const [recipeDetails, setRecipeDetails] = useState<RecipeDetailsInput>();
   const [relatedRecipe, setRelatedRecipe] = useState<RecipeSearch>();
   const [latestRecipe, setLatestRecipe] = useState<RecipeSearch>();
@@ -27,6 +31,7 @@ const RecipeDetails = () => {
   const recipeID = id?.toString() ?? "";
 
   useEffect(() => {
+    setRecipeDetailsLoading(true);
     const searchParams: RecipeSearchParams = {
       beta: false,
       diet: "balanced",
@@ -37,11 +42,14 @@ const RecipeDetails = () => {
       getRecipeDetails(recipeID, searchParams)
         .then(({data}) => {
           setRecipeDetails(data);
+          setRecipeDetailsLoading(false);
         })
         .catch((error) => {
           console.error(error);
+          setRecipeDetailsLoading(false);
         });
     }
+    setRelatedRecipeLoading(true);
     getRecipeSearch(searchParams)
       .then(({data}) => {
         const latestRecipeItems = data.hits.slice(
@@ -63,9 +71,11 @@ const RecipeDetails = () => {
           hits: relatedRecipe,
         };
         setRelatedRecipe(relatedRecipeCopy);
+        setRelatedRecipeLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setRelatedRecipeLoading(false);
       });
   }, [recipeID]);
   return (
@@ -73,9 +83,9 @@ const RecipeDetails = () => {
       <div className="flex lg:flex-row flex-col gap-x-4">
         <section className="lg:w-3/4 w-4/4">
           <div className="px-2 py-5 flex lg:flex-row flex-col gap-x-4">
-            {recipeDetails ? (
+            {!recipeDetailsLoading ? (
               <img
-                src={recipeDetails.recipe.images.REGULAR.url}
+                src={recipeDetails?.recipe.images.REGULAR.url}
                 className="rounded-lg lg:my-4 min-w-64 "
                 alt=""
               />
@@ -85,9 +95,13 @@ const RecipeDetails = () => {
 
             <div className="flex flex-col gap-y-4 w-full">
               <h1 className="lg:text-3xl font-bold text-lg pt-2 ">
-                {recipeDetails?.recipe.label ?? <Skeleton count={1} />}
+                {!recipeDetailsLoading ? (
+                  recipeDetails?.recipe.label
+                ) : (
+                  <Skeleton count={1} />
+                )}
               </h1>
-              {recipeDetails ? (
+              {!recipeDetailsLoading ? (
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Libero nemo quod, architecto recusandae eligendi temporibus
@@ -97,7 +111,7 @@ const RecipeDetails = () => {
               ) : (
                 <Skeleton count={4} />
               )}
-              {recipeDetails ? (
+              {!recipeDetailsLoading ? (
                 <div className="flex gap-x-5">
                   <RecipeBadge>
                     <i className="fa-regular fa-comments pr-1"> </i>{" "}
@@ -116,7 +130,7 @@ const RecipeDetails = () => {
                 <Skeleton count={2} />
               )}
               <div>
-                {recipeDetails ? (
+                {!recipeDetailsLoading ? (
                   <>
                     <img
                       className="w-12 h-12 rounded-full inline-block mr-3"
@@ -138,6 +152,7 @@ const RecipeDetails = () => {
             <RecipeTitle>Ingredients</RecipeTitle>
             <div className="">
               {recipeDetails &&
+                !recipeDetailsLoading &&
                 recipeDetails.recipe.ingredients.map((ingredient) => (
                   <div className="mb-3 flex gap-x-4  ">
                     <img
@@ -166,7 +181,7 @@ const RecipeDetails = () => {
                     </div>
                   </div>
                 ))}
-              {!recipeDetails &&
+              {recipeDetailsLoading &&
                 ingredientsSkeletonArray.map(() => (
                   <div
                     className="w-full flex 
@@ -191,10 +206,11 @@ const RecipeDetails = () => {
 
             <div className="flex gap-x-4 gap-y-2 flex-row flex-wrap">
               {recipeDetails &&
+                !recipeDetailsLoading &&
                 recipeDetails.recipe.healthLabels.map((label) => (
                   <RecipeBadge>{label}</RecipeBadge>
                 ))}
-              {!recipeDetails && (
+              {recipeDetailsLoading && (
                 <div className="w-full">
                   {" "}
                   <Skeleton count={4} />
@@ -208,6 +224,7 @@ const RecipeDetails = () => {
             <RecipeTitle>Related Recipe</RecipeTitle>
             <div className="flex flex-col gap-y-4 ">
               {relatedRecipe &&
+                !relatedRecipeLoading &&
                 relatedRecipe.hits.map(({recipe, _links}) => (
                   <RecipeCard
                     key={recipe.label}
@@ -215,7 +232,7 @@ const RecipeDetails = () => {
                     recipe={recipe}
                   />
                 ))}
-              {!relatedRecipe &&
+              {recipeDetailsLoading &&
                 relatedRecipeSkeletonArray.map((item, index) => (
                   <div className="flex flex-row gap-x-3 w-full">
                     <div className="w-[55%] ">
@@ -236,10 +253,11 @@ const RecipeDetails = () => {
 
         <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 items-center lg:justify-between  w-full">
           {latestRecipe &&
+            !relatedRecipeLoading &&
             latestRecipe.hits.map(({recipe, _links}) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
             ))}
-          {!latestRecipe &&
+          {recipeDetailsLoading &&
             latestRecipeSkeletonArray.map((item, index) => (
               <RecipeItemSkeleton key={index} />
             ))}
