@@ -28,8 +28,6 @@ const RecipeDetails = () => {
 
   useEffect(() => {
     const searchParams: RecipeSearchParams = {
-      app_id: "d29e7d29",
-      app_key: "a5d799d39df62345f05f8d36489e5953",
       beta: false,
       diet: "balanced",
       imageSize: "LARGE",
@@ -71,10 +69,10 @@ const RecipeDetails = () => {
       });
   }, [recipeID]);
   return (
-    <div className="px-4 mx-auto w-full max-w-screen-xl  py-4 ">
-      <div className="flex gap-x-4">
+    <div className="px-4 mx-auto w-full max-w-screen-xl py-4">
+      <div className="flex lg:flex-row flex-col gap-x-4">
         <section className="lg:w-3/4 w-4/4">
-          <div className="px-2 py-5 flex lg:flex-row flex-col   gap-x-4 ">
+          <div className="px-2 py-5 flex lg:flex-row flex-col gap-x-4">
             {recipeDetails ? (
               <img
                 src={recipeDetails.recipe.images.REGULAR.url}
@@ -82,7 +80,7 @@ const RecipeDetails = () => {
                 alt=""
               />
             ) : (
-              <Skeleton className="min-w-64 min-h-64" />
+              <Skeleton className="min-w-64 min-h-64 h-full w-full" />
             )}
 
             <div className="flex flex-col gap-y-4 w-full">
@@ -141,7 +139,7 @@ const RecipeDetails = () => {
             <div className="">
               {recipeDetails &&
                 recipeDetails.recipe.ingredients.map((ingredient) => (
-                  <div className="mb-3 flex gap-x-4 ">
+                  <div className="mb-3 flex gap-x-4  ">
                     <img
                       className="lg:w-40 lg:h-40 w-28 h-28 rounded-lg"
                       src={ingredient.image}
