@@ -1,0 +1,33 @@
+{
+  "name": "Food Recipe",
+  "short_name": "FD",
+  "theme_color": "#F17228",
+  "background_color": "#ffffff",
+  "description": "Food Recipe By mohammad Khaleghi",
+  "icons": [
+    {
+      "src": "/assets/images/logo-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "display": "standalone",
+  "display_override": ["fullscreen", "minimal-ui"],
+  "orientation": "portrait",
+  "start_url": "/",
+  "id": "/",
+  "splash_pages": null,
+  "prefer_related_applications": false
+}
