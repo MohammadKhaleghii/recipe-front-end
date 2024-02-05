@@ -246,10 +246,11 @@ const RecipeSearchPage = () => {
         </div>
         <div>
           {sidebarFilters.map((sidebarItem) => (
-            <div>
+            <div key={sidebarItem.key}>
               <div className="pt-3 font-bold">{sidebarItem.title}</div>
               {sidebarItem.children.map((item) => (
                 <div
+                  key={item.key}
                   onClick={() => handleSearchFilters(sidebarItem.key, item.key)}
                   className="flex items-center justify-start gap-x-2 cursor-pointer"
                 >

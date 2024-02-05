@@ -154,7 +154,7 @@ const RecipeDetails = () => {
               {recipeDetails &&
                 !recipeDetailsLoading &&
                 recipeDetails.recipe.ingredients.map((ingredient) => (
-                  <div className="mb-3 flex gap-x-4  ">
+                  <div key={ingredient.foodId} className="mb-3 flex gap-x-4  ">
                     <img
                       className="lg:w-40 lg:h-40 w-28 h-28 rounded-lg"
                       src={ingredient.image}
@@ -182,8 +182,9 @@ const RecipeDetails = () => {
                   </div>
                 ))}
               {recipeDetailsLoading &&
-                ingredientsSkeletonArray.map(() => (
+                ingredientsSkeletonArray.map((item, index) => (
                   <div
+                    key={index}
                     className="w-full flex 
                  gap-x-4 "
                   >
@@ -208,7 +209,7 @@ const RecipeDetails = () => {
               {recipeDetails &&
                 !recipeDetailsLoading &&
                 recipeDetails.recipe.healthLabels.map((label) => (
-                  <RecipeBadge>{label}</RecipeBadge>
+                  <RecipeBadge key={label}>{label}</RecipeBadge>
                 ))}
               {recipeDetailsLoading && (
                 <div className="w-full">
@@ -234,7 +235,7 @@ const RecipeDetails = () => {
                 ))}
               {recipeDetailsLoading &&
                 relatedRecipeSkeletonArray.map((item, index) => (
-                  <div className="flex flex-row gap-x-3 w-full">
+                  <div key={index} className="flex flex-row gap-x-3 w-full">
                     <div className="w-[55%] ">
                       {" "}
                       <Skeleton height={100} />{" "}

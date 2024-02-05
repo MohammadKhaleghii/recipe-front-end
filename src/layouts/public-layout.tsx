@@ -174,7 +174,7 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
       {isMobileMenuOpen && (
         <ul className="bg-white w-full h-full fixed overflow-hidden top-20 bottom-0 flex flex-col z-50 gap-y-3 pt-3 transition-transform">
           {headerNavBarItems.map((item) => (
-            <Link href={item.href}>
+            <Link key={item.title} href={item.href}>
               {" "}
               <li className="font-bold">{item.title}</li>
             </Link>
