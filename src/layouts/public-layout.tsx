@@ -1,12 +1,14 @@
 import RecipeButton from "@/components/button";
 import LoadingSpinner from "@/components/loading-spiner";
+import {MenuContext} from "@/context/menu-provider";
+import {Global, css} from "@emotion/react";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode, useContext, useEffect, useState} from "react";
 
 const PublicLayout = ({children}: {children: ReactNode}) => {
   const router = useRouter();
-
+  const {isMobileMenuOpen, setIsMobileMenuOpen} = useContext(MenuContext);
   const [routeChangeLoading, setRouteChangeLoading] = useState(false);
 
   useEffect(() => {
@@ -113,14 +115,24 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
       href: "#",
     },
   ];
+  const updateBodyStyle = () => {
+    if (isMobileMenuOpen) {
+      return css`
+        body {
+          overflow: hidden;
+        }
+      `;
+    }
+  };
   return (
     <>
+      <Global styles={updateBodyStyle()} />
       {routeChangeLoading && (
         <div className="absolute top-1 bottom-0 z-[100] left-3">
           <LoadingSpinner variant="contained" />
         </div>
       )}
-      <header className="bg-white h-20 border-b-slate-300 border-b flex flex-row items-center justify-center sticky top-0 z-50 ">
+      <header className="bg-white h-20 border-b-slate-300 border-b  flex flex-row items-center justify-center sticky top-0 z-50 ">
         <div className="mx-auto w-full max-w-screen-xl px-4  flex flex-row justify-between items-center">
           <Link href={"/"}>
             <img src="/assets/images/logo.png" alt="" />
@@ -143,14 +155,18 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
                 mainText="download app"
               ></RecipeButton>
             </div>
-            <div className="block lg:hidden">
-              <i className="fa-solid fa-bars"></i>
+            <div
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="block lg:hidden"
+            >
+              <i
+                className={`fa-solid fa-${isMobileMenuOpen ? "close" : "bars"}`}
+              ></i>
             </div>
           </div>
         </div>
       </header>
       <main className="mx-auto"> {children}</main>
-
       <footer className="bg-white border-t  border-t-slate-300 pb-2">
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
