@@ -5,13 +5,17 @@ import RecipeButton from "@/components/button";
 import RecipeInput from "@/components/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
+import {MenuContext} from "@/context/menu-provider";
 import PublicLayout from "@/layouts/public-layout";
+import {Global, css} from "@emotion/react";
 import {useRouter} from "next/router";
-import {ReactElement, useEffect, useState} from "react";
+import {ReactElement, useContext, useEffect, useState} from "react";
 
 const RecipeSearchPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
+  const {isMobileFilterMenuOpen, setIsMobileFilterMenuOpen} =
+    useContext(MenuContext);
   let [selectedDietFilter, setSelectedDietFilter] = useState<string[]>([]);
   let [selectedHealthFilter, setSelectedHealthFilter] = useState<string[]>([]);
   let [selectedCuisineTypeFilter, setSelectedCuisineTypeFilter] = useState<
@@ -197,6 +201,7 @@ const RecipeSearchPage = () => {
   };
 
   const handleApplyFilter = () => {
+    setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen);
     router.push({
       query: {
         diet: selectedDietFilter.toString(),
@@ -206,78 +211,104 @@ const RecipeSearchPage = () => {
     });
   };
 
-  return (
-    <div className="mx-auto my-10 w-full max-w-screen-xl px-4 flex flex-row lg:justify-between justify-around gap-x-3">
-      <section className="lg:w-1/4 lg:block hidden  h-full border border-gray-300  rounded-md p-2">
-        <div className="flex justify-between items-center border-b border-gray-100 pb-1">
-          <h3 className="text-lg font-bold">Filters</h3>
-          <button className="text-xs text-primary font-bold hover:bg-secondary hover:text-white transition delay-100 p-2 rounded-lg">
-            Remove
+  const filter = (
+    <>
+      {" "}
+      <div className="flex justify-between items-center border-b border-gray-100 pb-1">
+        <h3 className="text-lg font-bold">Filters</h3>
+        <button className="text-xs text-primary font-bold hover:bg-secondary hover:text-white transition delay-100 p-2 rounded-lg">
+          Remove
+        </button>
+      </div>
+      <div className="py-5">
+        <span className="pb-3 font-bold">search:</span>
+        <div className="flex items-center justify-center gap-x-2">
+          <RecipeInput
+            defaultValue={router.query.q?.toString() ?? ""}
+            onChange={(event) => setSearchedQuery(event.target.value)}
+            placeholder="search by...."
+            value={searchedQuery}
+            width="w-full"
+            height="h-[40px]"
+          />
+          <button
+            onClick={() =>
+              router.push({
+                query: {
+                  q: searchedQuery,
+                },
+              })
+            }
+            className="bg-primary rounded-md px-3 py-2"
+          >
+            <i className=" fas fa-search text-white cursor-pointer"></i>
           </button>
         </div>
-        <div className="py-5">
-          <span className="pb-3 font-bold">search:</span>
-          <div className="flex items-center justify-center gap-x-2">
-            <RecipeInput
-              defaultValue={router.query.q?.toString() ?? ""}
-              onChange={(event) => setSearchedQuery(event.target.value)}
-              placeholder="search by...."
-              value={searchedQuery}
-              width="w-full"
-              height="h-[40px]"
-            />
-            <button
-              onClick={() =>
-                router.push({
-                  query: {
-                    q: searchedQuery,
-                  },
-                })
-              }
-              className="bg-primary rounded-md px-3 py-2"
-            >
-              <i className=" fas fa-search text-white cursor-pointer"></i>
-            </button>
-          </div>
-
-          <div>
-            {sidebarFilters.map((sidebarItem) => (
-              <div>
-                <div className="pt-3 font-bold">{sidebarItem.title}</div>
-                {sidebarItem.children.map((item) => (
-                  <div
-                    onClick={() =>
-                      handleSearchFilters(sidebarItem.key, item.key)
-                    }
-                    className="flex items-center justify-start gap-x-2 cursor-pointer"
-                  >
-                    <div>
-                      <i
-                        className={`fa-regular  ${
-                          handleUpdateChecklistIcon(sidebarItem.key, item.key)
-                            ? "fa-square"
-                            : "fa-square-check"
-                        } text-xl`}
-                      ></i>
-                    </div>
-                    <div className="">{item.title}</div>
+        <div>
+          {sidebarFilters.map((sidebarItem) => (
+            <div>
+              <div className="pt-3 font-bold">{sidebarItem.title}</div>
+              {sidebarItem.children.map((item) => (
+                <div
+                  onClick={() => handleSearchFilters(sidebarItem.key, item.key)}
+                  className="flex items-center justify-start gap-x-2 cursor-pointer"
+                >
+                  <div>
+                    <i
+                      className={`fa-regular  ${
+                        handleUpdateChecklistIcon(sidebarItem.key, item.key)
+                          ? "fa-square"
+                          : "fa-square-check"
+                      } text-xl`}
+                    ></i>
                   </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="pt-5">
-            <RecipeButton
-              onClick={() => handleApplyFilter()}
-              UIType="secondary"
-              width="w-full"
-              mainText="Apply Filters"
-            />
-          </div>
+                  <div className="">{item.title}</div>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
+        <div className="pt-5">
+          <RecipeButton
+            onClick={() => handleApplyFilter()}
+            UIType="secondary"
+            width="w-full"
+            mainText="Apply Filters"
+          />
+        </div>
+        <div className="pt-5 lg:hidden block lg:pt-0 ">
+          <RecipeButton
+            onClick={() => setIsMobileFilterMenuOpen(false)}
+            UIType="primary"
+            width="w-full"
+            mainText="Close"
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  const updateBodyStyle = () => {
+    if (isMobileFilterMenuOpen) {
+      return css`
+        body {
+          overflow: hidden;
+        }
+      `;
+    }
+  };
+
+  return (
+    <div className="mx-auto my-10 w-full max-w-screen-xl px-4 flex flex-row lg:justify-between justify-around gap-x-3">
+      <Global styles={updateBodyStyle()} />
+      <section className="lg:w-1/4 lg:block hidden  h-full border border-gray-300  rounded-md p-2">
+        {filter}
       </section>
       <section className="lg:w-3/4 w-4/4">
-        <div className=" flex-row items-center  lg:hidden flex  gap-x-2">
+        <div
+          onClick={() => setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen)}
+          className=" flex-row items-center  lg:hidden flex  gap-x-2"
+        >
           <i className="fa-regular fa-filter text-lg"></i>
           <button className="font-bold text-xl my-4">Filters</button>
         </div>
@@ -293,6 +324,11 @@ const RecipeSearchPage = () => {
             ))}
         </div>
       </section>
+      {isMobileFilterMenuOpen && (
+        <section className="fixed w-full h-[90%] bottom-0 bg-white rounded-e-md z-50 p-4 overflow-y-scroll">
+          {filter}
+        </section>
+      )}
     </div>
   );
 };
