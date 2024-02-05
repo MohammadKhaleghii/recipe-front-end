@@ -6,13 +6,19 @@
   "description": "Food Recipe By mohammad Khaleghi",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "/assets/images/logo-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/logo-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "favicon.png",
+      "src": "/assets/images/logo-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -23,5 +29,5 @@
   "start_url": "/",
   "id": "/",
   "splash_pages": null,
-  "prefer_related_applications": true
+  "prefer_related_applications": false
 }
