@@ -4,7 +4,8 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Recipe </title>
+        <title>Recipe By Mohammad Khaleghi </title>
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
       </Head>
       <body>
         <Main />
