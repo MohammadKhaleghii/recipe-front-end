@@ -201,7 +201,7 @@ const RecipeSearchPage = () => {
   };
 
   const handleApplyFilter = () => {
-    setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen);
+    setIsMobileFilterMenuOpen(false);
     router.push({
       query: {
         diet: selectedDietFilter.toString(),
