@@ -304,7 +304,7 @@ const RecipeSearchPage = () => {
       <section className="lg:w-1/4 lg:block hidden  h-full border border-gray-300  rounded-md p-2">
         {filter}
       </section>
-      <section className="lg:w-3/4 w-4/4">
+      <section className="lg:w-3/4 w-full">
         <div
           onClick={() => setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen)}
           className=" flex-row items-center  lg:hidden flex  gap-x-2"
@@ -325,7 +325,7 @@ const RecipeSearchPage = () => {
         </div>
       </section>
       {isMobileFilterMenuOpen && (
-        <section className="fixed w-full h-[90%] bottom-0 bg-white rounded-e-md z-50 p-4 overflow-y-scroll">
+        <section className="fixed w-full h-full bottom-0 bg-white rounded-e-md z-50 p-4 overflow-y-scroll">
           {filter}
         </section>
       )}
