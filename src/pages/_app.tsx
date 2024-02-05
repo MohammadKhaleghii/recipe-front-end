@@ -5,7 +5,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import type {AppProps} from "next/app";
 import {NextPage} from "next";
 import {ReactElement, ReactNode} from "react";
-import MenuProvider from "@/context/menu-provider";
+import MenuProvider from "@/contexts/menu-provider";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

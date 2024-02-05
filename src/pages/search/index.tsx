@@ -5,7 +5,7 @@ import RecipeButton from "@/components/common/button";
 import RecipeInput from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
-import {MenuContext} from "@/context/menu-provider";
+import {MenuContext} from "@/contexts/menu-provider";
 import PublicLayout from "@/layouts/public-layout";
 import {Global, css} from "@emotion/react";
 import {useRouter} from "next/router";
