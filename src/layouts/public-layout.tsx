@@ -1,5 +1,5 @@
-import RecipeButton from "@/components/button";
-import LoadingSpinner from "@/components/loading-spiner";
+import RecipeButton from "@/components/common/button";
+import LoadingSpinner from "@/components/common/loading-spiner";
 import {MenuContext} from "@/context/menu-provider";
 import {Global, css} from "@emotion/react";
 import Link from "next/link";
