@@ -172,6 +172,13 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
           {headerNavBarItems.map((item) => (
             <li className="font-bold">{item.title}</li>
           ))}
+          <div className="w-full p-4">
+            <RecipeButton
+              width="w-full"
+              UIType="primary"
+              mainText="download app"
+            ></RecipeButton>
+          </div>
         </ul>
       )}
       <main className="mx-auto"> {children}</main>
