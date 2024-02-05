@@ -166,6 +166,14 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
           </div>
         </div>
       </header>
+
+      {isMobileMenuOpen && (
+        <ul className="bg-white w-full h-full fixed overflow-hidden top-20 bottom-0 flex flex-col z-50 gap-y-3 pt-3 transition-transform">
+          {headerNavBarItems.map((item) => (
+            <li className="font-bold">{item.title}</li>
+          ))}
+        </ul>
+      )}
       <main className="mx-auto"> {children}</main>
       <footer className="bg-white border-t  border-t-slate-300 pb-2">
         <div className="mx-auto w-full max-w-screen-xl">
