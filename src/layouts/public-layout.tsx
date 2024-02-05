@@ -131,7 +131,7 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
   return (
     <>
       <Global styles={updateBodyStyle()} />
-      {!routeChangeLoading && (
+      {routeChangeLoading && (
         <div className="fixed top-1 bottom-0 z-[100] left-3">
           <LoadingSpinner variant="contained" />
         </div>
