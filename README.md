@@ -37,11 +37,13 @@ Three types of case styles have been used in this project:
 
 
 ## Technologies
-- React
+- React.JS
+- Next.JS
 - TypeScript
 - JSX
 - CSS
-- Styled-components
-- Tailwindcss
+- Emotion
+- Tailwind
+- Axios
 
 
