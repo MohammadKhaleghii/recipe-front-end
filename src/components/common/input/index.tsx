@@ -1,31 +1,31 @@
-import {FC} from "react";
-import {InputProps} from "./input.interface";
+import { FC } from "react";
+import { InputProps } from "./input.interface";
+import { cva } from "class-variance-authority";
+import { cn } from "@/utilities/cn";
 
-const RecipeInput: FC<InputProps> = ({
-  textColor,
-  backgroundColor,
-  iconClassName,
-  width,
-  height,
-  borderRadius,
+const inputVariant = cva("px-4 py-3 outline-none", {
+  variants: {
+    variants: {
+      primary: "h-[50px] w-[400px] text-[#9E9E9E] bg-[#F5F5F5] rounded-lg",
+    },
+  },
+});
+
+const Input: FC<InputProps> = ({
+  variants,
+  className,
+  children,
   ...inputProps
 }) => {
   return (
     <>
       <input
-        className={`${height} ${width} ${textColor} ${backgroundColor}  ${borderRadius} px-4 py-3 outline-none`}
+        className={cn(inputVariant({ variants, className }))}
         {...inputProps}
       />
-      {/* <i className={`absolute left-0 `}>a</i> */}
+      {children}
     </>
   );
 };
 
-export default RecipeInput;
-RecipeInput.defaultProps = {
-  height: "h-[50px]",
-  width: "w-[400px]",
-  textColor: "text-[#9E9E9E]",
-  backgroundColor: "bg-[#F5F5F5]",
-  borderRadius: "rounded-lg",
-};
+export { Input, inputVariant };
