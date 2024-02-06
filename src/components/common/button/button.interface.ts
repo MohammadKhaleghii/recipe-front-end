@@ -1,13 +1,7 @@
-import {ButtonHTMLAttributes, ReactNode} from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
+import { VariantProps } from "class-variance-authority";
+import { buttonVariant } from ".";
 
-export interface RecipeButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
-  UIType: "primary" | "secondary";
-  backgroundColor?: string;
-  width?: string;
-  backgroundOnHover?: string;
-  textOnHover?: string;
-  textColor?: string;
-  mainText: string;
-  icon?: ReactNode;
-}
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariant> {}
