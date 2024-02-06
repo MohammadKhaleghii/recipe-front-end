@@ -1,10 +1,7 @@
-import {HTMLAttributes, InputHTMLAttributes} from "react";
+import { InputHTMLAttributes } from "react";
+import { VariantProps } from "class-variance-authority";
+import { inputVariant } from ".";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  textColor?: string;
-  backgroundColor?: string;
-  iconClassName?: string;
-  width?: string;
-  height?: string;
-  borderRadius?: string;
-}
+export interface InputProps
+  extends InputHTMLAttributes<HTMLInputElement>,
+    VariantProps<typeof inputVariant> {}
