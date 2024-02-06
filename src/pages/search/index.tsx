@@ -1,20 +1,21 @@
-import {RecipeSearch} from "@/api/dto/input/recipe-search";
-import {RecipeSearchParams} from "@/api/dto/output/recipe-search-params";
-import {getRecipeSearch} from "@/api/lib/recipes";
-import RecipeButton from "@/components/common/button";
+import { RecipeSearch } from "@/api/dto/input/recipe-search";
+import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
+import { getRecipeSearch } from "@/api/lib/recipes";
+import { Button } from "@/components/common/button";
+// import RecipeButton from "@/components/common/button";
 import RecipeInput from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
-import {MenuContext} from "@/contexts/menu-provider";
+import { MenuContext } from "@/contexts/menu-provider";
 import PublicLayout from "@/layouts/public-layout";
-import {Global, css} from "@emotion/react";
-import {useRouter} from "next/router";
-import {ReactElement, useContext, useEffect, useState} from "react";
+import { Global, css } from "@emotion/react";
+import { useRouter } from "next/router";
+import { ReactElement, useContext, useEffect, useState } from "react";
 
 const RecipeSearchPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
-  const {isMobileFilterMenuOpen, setIsMobileFilterMenuOpen} =
+  const { isMobileFilterMenuOpen, setIsMobileFilterMenuOpen } =
     useContext(MenuContext);
   let [selectedDietFilter, setSelectedDietFilter] = useState<string[]>([]);
   let [selectedHealthFilter, setSelectedHealthFilter] = useState<string[]>([]);
@@ -24,7 +25,7 @@ const RecipeSearchPage = () => {
 
   const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
   const [searchedQuery, setSearchedQuery] = useState(
-    router.query.q?.toString() ?? ""
+    router.query.q?.toString() ?? "",
   );
 
   const muckArrayForSkeleton = new Array(9).fill(0);
@@ -43,7 +44,7 @@ const RecipeSearchPage = () => {
     // }
     setLoading(true);
     getRecipeSearch(searchParams)
-      .then(({data}) => {
+      .then(({ data }) => {
         const recipeItemsTenFirstItems = data.hits.slice(0, 41);
         const recipe: RecipeSearch = {
           ...data,
@@ -139,7 +140,7 @@ const RecipeSearchPage = () => {
         const findDietEl = selectedDietFilter.find((item) => item === key);
         if (findDietEl) {
           const newDietArray = selectedDietFilter.filter(
-            (item) => item !== key
+            (item) => item !== key,
           );
           setSelectedDietFilter(newDietArray);
           break;
@@ -150,7 +151,7 @@ const RecipeSearchPage = () => {
         const findHealthEl = selectedHealthFilter.find((item) => item === key);
         if (findHealthEl) {
           const newHealthArray = selectedHealthFilter.filter(
-            (item) => item !== key
+            (item) => item !== key,
           );
           setSelectedHealthFilter(newHealthArray);
           break;
@@ -159,11 +160,11 @@ const RecipeSearchPage = () => {
         break;
       case 3:
         const findCuisineType = selectedCuisineTypeFilter.find(
-          (item) => item === key
+          (item) => item === key,
         );
         if (findCuisineType) {
           const newCuisineTypeArray = selectedCuisineTypeFilter.filter(
-            (item) => item !== key
+            (item) => item !== key,
           );
           setSelectedCuisineTypeFilter(newCuisineTypeArray);
           break;
@@ -190,7 +191,7 @@ const RecipeSearchPage = () => {
 
       case 3:
         const findCuisineType = selectedCuisineTypeFilter.find(
-          (item) => item === key
+          (item) => item === key,
         );
         if (findCuisineType) {
           return false;
@@ -215,9 +216,9 @@ const RecipeSearchPage = () => {
   const filter = (
     <>
       {" "}
-      <div className="flex justify-between items-center border-b border-gray-100 pb-1">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-1">
         <h3 className="text-lg font-bold">Filters</h3>
-        <button className="text-xs text-primary font-bold hover:bg-secondary hover:text-white transition delay-100 p-2 rounded-lg">
+        <button className="rounded-lg p-2 text-xs font-bold text-primary transition delay-100 hover:bg-secondary hover:text-white">
           Remove
         </button>
       </div>
@@ -240,9 +241,9 @@ const RecipeSearchPage = () => {
                 },
               })
             }
-            className="bg-primary rounded-md px-3 py-2"
+            className="rounded-md bg-primary px-3 py-2"
           >
-            <i className=" fas fa-search text-white cursor-pointer"></i>
+            <i className=" fas fa-search cursor-pointer text-white"></i>
           </button>
         </div>
         <div>
@@ -253,7 +254,7 @@ const RecipeSearchPage = () => {
                 <div
                   key={item.key}
                   onClick={() => handleSearchFilters(sidebarItem.key, item.key)}
-                  className="flex items-center justify-start gap-x-2 cursor-pointer"
+                  className="flex cursor-pointer items-center justify-start gap-x-2"
                 >
                   <div>
                     <i
@@ -271,20 +272,24 @@ const RecipeSearchPage = () => {
           ))}
         </div>
         <div className="pt-5">
-          <RecipeButton
+          <Button
+            variant="primary"
             onClick={() => handleApplyFilter()}
-            UIType="secondary"
-            width="w-full"
-            mainText="Apply Filters"
-          />
+            className="w-full"
+          >
+            {" "}
+            Apply Filters
+          </Button>
         </div>
-        <div className="pt-5 lg:hidden block lg:pt-0 ">
-          <RecipeButton
+        <div className="block pt-5 lg:hidden lg:pt-0 ">
+          <Button
+            variant="secondary"
             onClick={() => setIsMobileFilterMenuOpen(false)}
-            UIType="primary"
-            width="w-full"
-            mainText="Close"
-          />
+            className="w-full"
+          >
+            {" "}
+            Close
+          </Button>
         </div>
       </div>
     </>
@@ -301,23 +306,23 @@ const RecipeSearchPage = () => {
   };
 
   return (
-    <div className="mx-auto my-10 w-full max-w-screen-xl px-4 flex flex-row lg:justify-between justify-around gap-x-3">
+    <div className="mx-auto my-10 flex w-full max-w-screen-xl flex-row justify-around gap-x-3 px-4 lg:justify-between">
       <Global styles={updateBodyStyle()} />
-      <section className="lg:w-1/4 lg:block hidden  h-full border border-gray-300  rounded-md p-2">
+      <section className="hidden h-full rounded-md  border border-gray-300 p-2  lg:block lg:w-1/4">
         {filter}
       </section>
-      <section className="lg:w-3/4 w-full">
+      <section className="w-full lg:w-3/4">
         <div
           onClick={() => setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen)}
-          className=" flex-row items-center  lg:hidden flex  gap-x-2"
+          className=" flex flex-row  items-center gap-x-2  lg:hidden"
         >
           <i className="fa-regular fa-filter text-lg"></i>
-          <button className="font-bold text-xl my-4">Filters</button>
+          <button className="my-4 text-xl font-bold">Filters</button>
         </div>
-        <div className="grid lg:grid-cols-3 md:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 items-center lg:justify-between  w-full">
+        <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-3  lg:justify-between">
           {!loading &&
             recipeSearchItems &&
-            recipeSearchItems.hits.map(({recipe, _links}) => (
+            recipeSearchItems.hits.map(({ recipe, _links }) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
             ))}
           {loading &&
@@ -327,7 +332,7 @@ const RecipeSearchPage = () => {
         </div>
       </section>
       {isMobileFilterMenuOpen && (
-        <section className="fixed w-full h-full bottom-0 bg-white rounded-e-md z-50 p-4 overflow-y-scroll">
+        <section className="fixed bottom-0 z-50 h-full w-full overflow-y-scroll rounded-e-md bg-white p-4">
           {filter}
         </section>
       )}

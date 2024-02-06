@@ -1,13 +1,13 @@
-import {RecipeSearch} from "@/api/dto/input/recipe-search";
-import {RecipeSearchParams} from "@/api/dto/output/recipe-search-params";
-import {getRecipeSearch} from "@/api/lib/recipes";
-import RecipeButton from "@/components/common/button";
+import { RecipeSearch } from "@/api/dto/input/recipe-search";
+import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
+import { getRecipeSearch } from "@/api/lib/recipes";
+import { Button } from "@/components/common/button";
 import RecipeInput from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
-import {useRouter} from "next/router";
-import {ReactElement, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function Home() {
       type: "public",
     };
     getRecipeSearch(searchParams)
-      .then(({data}) => {
+      .then(({ data }) => {
         const recipeItemsTenFirstItems = data.hits.slice(0, 12);
         const recipe: RecipeSearch = {
           ...data,
@@ -36,30 +36,32 @@ export default function Home() {
   }, []);
   return (
     <>
-      <section className="bg-secondary lg:h-[450px] h-[350px] flex items-center justify-center">
-        <div className="bg-white rounded-lg lg:w-1/2 md:w-[90%] w-full lg:mx-0 mx-2 h-1/2 p-4 flex flex-col justify-center ">
-          <div className="text-gray-200 lg:text-3xl text-xl font-bold pb-3">
+      <section className="flex h-[350px] items-center justify-center bg-secondary lg:h-[450px]">
+        <div className="mx-2 flex h-1/2 w-full flex-col justify-center rounded-lg bg-white p-4 md:w-[90%] lg:mx-0 lg:w-1/2 ">
+          <div className="pb-3 text-xl font-bold text-gray-200 lg:text-3xl">
             Search For Recipe
           </div>
-          <div className="flex lg:flex-row flex-col   items-center justify-between gap-x-3 gap-y-3">
+          <div className="flex flex-col items-center   justify-between gap-x-3 gap-y-3 lg:flex-row">
             <RecipeInput
               onChange={(event) => setSetSearchedQuery(event.target.value)}
               width="w-full"
               placeholder="Enter your title"
             />
-            <RecipeButton
+            <Button
               onClick={() => router.push(`/search?q=${searchedQuery}`)}
-              UIType="primary"
-              width="w-full lg:w-fit"
-              mainText="Find Recipe"
-            />
+              className="w-fit"
+              variant="primary"
+            >
+              {" "}
+              Apply Filters
+            </Button>
           </div>
         </div>
       </section>
-      <section className="py-10 px-4 mx-auto w-full max-w-screen-xl ">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 items-center lg:justify-between  w-full">
+      <section className="mx-auto w-full max-w-screen-xl px-4 py-10 ">
+        <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-4  lg:justify-between">
           {recipeSearchItems &&
-            recipeSearchItems.hits.map(({recipe, _links}) => (
+            recipeSearchItems.hits.map(({ recipe, _links }) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
             ))}
           {!recipeSearchItems &&
