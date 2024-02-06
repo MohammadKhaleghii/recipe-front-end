@@ -2,7 +2,7 @@ import { RecipeSearch } from "@/api/dto/input/recipe-search";
 import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
 import { getRecipeSearch } from "@/api/lib/recipes";
 import { Button } from "@/components/common/button";
-import RecipeInput from "@/components/common/input";
+import { Input } from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
@@ -42,7 +42,9 @@ export default function Home() {
             Search For Recipe
           </div>
           <div className="flex flex-col items-center   justify-between gap-x-3 gap-y-3 lg:flex-row">
-            <RecipeInput
+            <Input
+              variants="primary"
+              className="w-full"
               onChange={(event) => setSetSearchedQuery(event.target.value)}
               width="w-full"
               placeholder="Enter your title"

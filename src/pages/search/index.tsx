@@ -3,7 +3,7 @@ import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
 import { getRecipeSearch } from "@/api/lib/recipes";
 import { Button } from "@/components/common/button";
 // import RecipeButton from "@/components/common/button";
-import RecipeInput from "@/components/common/input";
+import { Input } from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import { MenuContext } from "@/contexts/menu-provider";
@@ -225,13 +225,12 @@ const RecipeSearchPage = () => {
       <div className="py-5">
         <span className="pb-3 font-bold">search:</span>
         <div className="flex items-center justify-center gap-x-2">
-          <RecipeInput
+          <Input
+            variants="primary"
             defaultValue={router.query.q?.toString() ?? ""}
             onChange={(event) => setSearchedQuery(event.target.value)}
             placeholder="search by...."
             value={searchedQuery}
-            width="w-full"
-            height="h-[40px]"
           />
           <button
             onClick={() =>
