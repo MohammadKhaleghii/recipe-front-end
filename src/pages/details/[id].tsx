@@ -3,6 +3,7 @@ import { RecipeSearch } from "@/api/dto/input/recipe-search";
 import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
 import { getRecipeDetails, getRecipeSearch } from "@/api/lib/recipes";
 import RecipeCard from "@/components/recipe-card";
+import RecipeCardSkeleton from "@/components/recipe-card/recipe-card-skeleton";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
@@ -235,15 +236,7 @@ const RecipeDetails = () => {
                 ))}
               {recipeDetailsLoading &&
                 relatedRecipeSkeletonArray.map((item, index) => (
-                  <div key={index} className="flex w-full flex-row gap-x-3">
-                    <div className="w-[55%] ">
-                      {" "}
-                      <Skeleton height={100} />{" "}
-                    </div>
-                    <div className="w-full">
-                      <Skeleton count={3} />{" "}
-                    </div>
-                  </div>
+                  <RecipeCardSkeleton key={index} />
                 ))}
             </div>
           </div>
