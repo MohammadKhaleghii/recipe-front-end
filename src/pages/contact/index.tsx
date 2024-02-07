@@ -23,7 +23,7 @@ const Contact = () => {
       }),
       onSubmit: (values) => {
         console.log(values);
-        toast.success("فرم شما با موفیت ثبت شد");
+        toast.success("Done");
         resetForm();
       },
     });
