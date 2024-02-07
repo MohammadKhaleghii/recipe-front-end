@@ -9,12 +9,13 @@ https://recipe-front-end-coral.vercel.app/
 - React.JS
 - Next.JS
 - TypeScript
-- JSX
-- CSS
-- Emotion
-- Tailwind
-- Axios
 - PWA
+- Axios
+- JSX
+- Emotion
+- CSS
+- Tailwind
+- Tailwind-mege
 
 
 ## Naming Directories and Files
@@ -37,15 +38,14 @@ Three types of case styles have been used in this project:
 
 ## Parts definition
 
-- **Component**: The most crucial and fundamental building blocks represent the most basic interface elements, such as buttons, icons, text fields, date-picker, and ... that can be used in many parts of the application to build and render different User Interface instances. Each component does a single task or part of a single task.
+- **Component**: The most crucial and fundamental building blocks represent the most basic interface elements, such as buttons, icons, and text fields, date-picker, and ... that can be used in many parts of the application to build and render different User Interface instances. each component does a single task or part of a single task.
 
 - **Container**: The container consists of groups of components working together to do multiple tasks but generally was designed for reusability purposes such as headers, footers, and ...
 
-- **Layout**: Layouts allow us to overwhelm page parts with reused parts. For example, in the dashboard, we have several pages, all of which have a sidebar navigation menu. The layout helps us to avoid reusing this menu on those pages.
+- **Layout**: Layouts allow us to overwhelm page parts with reused parts. for example in the dashboard, we have several pages and all of which have a sidebar navigation menu. The layout helps us to avoid reusing this menu on that pages.
 
-- **Routes**: Represent a complete webpage. Each page is associated with a route based on its file name. Such as the about page, the home page, the search page, and...
+- **Page**: Reperesent a compelete webpage. Each page is associated with a route based on its file name. such as the about page, the home page, the search page, and...
 
-- **Services**: The services is a firestore config.
 
 
 
