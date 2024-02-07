@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import { toast } from "react-hot-toast";
 
 const RecipeDetails = () => {
   const [recipeDetailsLoading, setRecipeDetailsLoading] =
@@ -75,7 +76,7 @@ const RecipeDetails = () => {
       })
       .catch((error) => {
         console.error(error);
-        setRelatedRecipeLoading(false);
+        toast.error("Server error! please refresh this page");
       });
   }, [recipeID]);
   return (

@@ -9,6 +9,7 @@ import { MenuContext } from "@/contexts/menu-provider";
 import PublicLayout from "@/layouts/public-layout";
 import { Global, css } from "@emotion/react";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 import {
   ReactElement,
   useContext,
@@ -74,6 +75,7 @@ const RecipeSearchPage = () => {
         })
         .catch((error) => {
           console.error(error);
+          toast.error("Server error! please refresh this page");
         });
     }
   }, [router.query]);
