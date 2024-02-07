@@ -1,16 +1,16 @@
-import {RecipeDetailsInput} from "@/api/dto/input/recipe-details";
-import {RecipeSearch} from "@/api/dto/input/recipe-search";
-import {RecipeSearchParams} from "@/api/dto/output/recipe-search-params";
-import {getRecipeDetails, getRecipeSearch} from "@/api/lib/recipes";
+import { RecipeDetailsInput } from "@/api/dto/input/recipe-details";
+import { RecipeSearch } from "@/api/dto/input/recipe-search";
+import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
+import { getRecipeDetails, getRecipeSearch } from "@/api/lib/recipes";
 import RecipeCard from "@/components/recipe-card";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
 import PublicLayout from "@/layouts/public-layout";
-import {RecipeBadge} from "@/styles/components/badge";
-import {RecipeTitle} from "@/styles/components/title";
+import { RecipeBadge } from "@/styles/components/badge";
+import { RecipeTitle } from "@/styles/components/title";
 import Link from "next/link";
-import {useRouter} from "next/router";
-import {ReactElement, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
 const RecipeDetails = () => {
@@ -26,7 +26,7 @@ const RecipeDetails = () => {
   const latestRecipeSkeletonArray = new Array(4).fill(0);
 
   const {
-    query: {id},
+    query: { id },
   } = useRouter();
   const recipeID = id?.toString() ?? "";
 
@@ -40,7 +40,7 @@ const RecipeDetails = () => {
     };
     if (recipeID) {
       getRecipeDetails(recipeID, searchParams)
-        .then(({data}) => {
+        .then(({ data }) => {
           setRecipeDetails(data);
           setRecipeDetailsLoading(false);
         })
@@ -51,10 +51,10 @@ const RecipeDetails = () => {
     }
     setRelatedRecipeLoading(true);
     getRecipeSearch(searchParams)
-      .then(({data}) => {
+      .then(({ data }) => {
         const latestRecipeItems = data.hits.slice(
           data.hits.length - 4,
-          data.hits.length
+          data.hits.length,
         );
         const latestRecipeItemsCopy: RecipeSearch = {
           ...data,
@@ -64,7 +64,7 @@ const RecipeDetails = () => {
 
         const relatedRecipe = data.hits.slice(
           data.hits.length - 4,
-          data.hits.length
+          data.hits.length,
         );
         const relatedRecipeCopy: RecipeSearch = {
           ...data,
@@ -79,22 +79,22 @@ const RecipeDetails = () => {
       });
   }, [recipeID]);
   return (
-    <div className="px-4 mx-auto w-full max-w-screen-xl py-4">
-      <div className="flex lg:flex-row flex-col gap-x-4">
-        <section className="lg:w-3/4 w-4/4">
-          <div className="px-2 py-5 flex lg:flex-row flex-col gap-x-4">
+    <div className="mx-auto w-full max-w-screen-xl px-4 py-4">
+      <div className="flex flex-col gap-x-4 lg:flex-row">
+        <section className="w-4/4 lg:w-3/4">
+          <div className="flex flex-col gap-x-4 px-2 py-5 lg:flex-row">
             {!recipeDetailsLoading ? (
               <img
                 src={recipeDetails?.recipe.images.REGULAR.url}
-                className="rounded-lg lg:my-4 min-w-64 "
+                className="min-w-64 rounded-lg lg:my-4 "
                 alt=""
               />
             ) : (
-              <Skeleton className="min-w-64 min-h-64 h-full w-full" />
+              <Skeleton className="h-full min-h-64 w-full min-w-64" />
             )}
 
-            <div className="flex flex-col gap-y-4 w-full">
-              <h1 className="lg:text-3xl font-bold text-lg pt-2 ">
+            <div className="flex w-full flex-col gap-y-4">
+              <h1 className="pt-2 text-lg font-bold lg:text-3xl ">
                 {!recipeDetailsLoading ? (
                   recipeDetails?.recipe.label
                 ) : (
@@ -133,7 +133,7 @@ const RecipeDetails = () => {
                 {!recipeDetailsLoading ? (
                   <>
                     <img
-                      className="w-12 h-12 rounded-full inline-block mr-3"
+                      className="mr-3 inline-block h-12 w-12 rounded-full"
                       src="/assets/images/author.jpeg"
                       alt=""
                     />
@@ -148,7 +148,7 @@ const RecipeDetails = () => {
               </div>
             </div>
           </div>
-          <div className="py-4 border border-gray-300 rounded-md p-2">
+          <div className="rounded-md border border-gray-300 p-2 py-4">
             <RecipeTitle>Ingredients</RecipeTitle>
             <div className="">
               {recipeDetails &&
@@ -156,7 +156,7 @@ const RecipeDetails = () => {
                 recipeDetails.recipe.ingredients.map((ingredient) => (
                   <div key={ingredient.foodId} className="mb-3 flex gap-x-4  ">
                     <img
-                      className="lg:w-40 lg:h-40 w-28 h-28 rounded-lg"
+                      className="h-28 w-28 rounded-lg lg:h-40 lg:w-40"
                       src={ingredient.image}
                       alt=""
                     />
@@ -185,7 +185,7 @@ const RecipeDetails = () => {
                 ingredientsSkeletonArray.map((item, index) => (
                   <div
                     key={index}
-                    className="w-full flex 
+                    className="flex w-full 
                  gap-x-4 "
                   >
                     <div>
@@ -202,10 +202,10 @@ const RecipeDetails = () => {
                 ))}
             </div>
           </div>
-          <div className="py-4 border border-gray-300 rounded-md p-2 my-4">
+          <div className="my-4 rounded-md border border-gray-300 p-2 py-4">
             <RecipeTitle>Health Labels</RecipeTitle>
 
-            <div className="flex gap-x-4 gap-y-2 flex-row flex-wrap">
+            <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">
               {recipeDetails &&
                 !recipeDetailsLoading &&
                 recipeDetails.recipe.healthLabels.map((label) => (
@@ -220,13 +220,13 @@ const RecipeDetails = () => {
             </div>
           </div>
         </section>
-        <section className="lg:w-1/4 hidden lg:block  ">
-          <div className="border border-gray-300 rounded-md p-2">
+        <section className="hidden lg:block lg:w-1/4  ">
+          <div className="rounded-md border border-gray-300 p-2">
             <RecipeTitle>Related Recipe</RecipeTitle>
             <div className="flex flex-col gap-y-4 ">
               {relatedRecipe &&
                 !relatedRecipeLoading &&
-                relatedRecipe.hits.map(({recipe, _links}) => (
+                relatedRecipe.hits.map(({ recipe, _links }) => (
                   <RecipeCard
                     key={recipe.label}
                     _links={_links}
@@ -235,7 +235,7 @@ const RecipeDetails = () => {
                 ))}
               {recipeDetailsLoading &&
                 relatedRecipeSkeletonArray.map((item, index) => (
-                  <div key={index} className="flex flex-row gap-x-3 w-full">
+                  <div key={index} className="flex w-full flex-row gap-x-3">
                     <div className="w-[55%] ">
                       {" "}
                       <Skeleton height={100} />{" "}
@@ -249,13 +249,13 @@ const RecipeDetails = () => {
           </div>
         </section>
       </div>
-      <section className="py-10 mx-auto w-full max-w-screen-xl ">
+      <section className="mx-auto w-full max-w-screen-xl py-10 ">
         <RecipeTitle>Latest Recipe</RecipeTitle>
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 items-center lg:justify-between  w-full">
+        <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-4  lg:justify-between">
           {latestRecipe &&
             !relatedRecipeLoading &&
-            latestRecipe.hits.map(({recipe, _links}) => (
+            latestRecipe.hits.map(({ recipe, _links }) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
             ))}
           {recipeDetailsLoading &&
