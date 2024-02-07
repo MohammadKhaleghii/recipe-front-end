@@ -1,14 +1,14 @@
-import RecipeButton from "@/components/common/button";
-import LoadingSpinner from "@/components/common/loading-spiner";
-import {MenuContext} from "@/contexts/menu-provider";
-import {Global, css} from "@emotion/react";
+import { Button } from "@/components/common/button";
+import LoadingSpinner from "@/components/common/loading-spinner";
+import { MenuContext } from "@/contexts/menu-provider";
+import { Global, css } from "@emotion/react";
 import Link from "next/link";
-import {useRouter} from "next/router";
-import {ReactNode, useContext, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { ReactNode, useContext, useEffect, useState } from "react";
 
-const PublicLayout = ({children}: {children: ReactNode}) => {
+const PublicLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const {isMobileMenuOpen, setIsMobileMenuOpen} = useContext(MenuContext);
+  const { isMobileMenuOpen, setIsMobileMenuOpen } = useContext(MenuContext);
   const [routeChangeLoading, setRouteChangeLoading] = useState(false);
 
   useEffect(() => {
@@ -132,20 +132,20 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
     <>
       <Global styles={updateBodyStyle()} />
       {routeChangeLoading && (
-        <div className="fixed top-1 bottom-0 z-[100] left-3">
+        <div className="fixed bottom-0 left-3 top-1 z-[100]">
           <LoadingSpinner variant="contained" />
         </div>
       )}
-      <header className="bg-white h-20 border-b-slate-300 border-b  flex flex-row items-center justify-center sticky top-0 z-50 ">
-        <div className="mx-auto w-full max-w-screen-xl px-4  flex flex-row justify-between items-center">
+      <header className="sticky top-0 z-50 flex  h-20 flex-row items-center justify-center border-b border-b-slate-300 bg-white ">
+        <div className="mx-auto flex w-full max-w-screen-xl  flex-row items-center justify-between px-4">
           <Link href={"/"}>
             <img src="/assets/images/logo.png" alt="" />
           </Link>
-          <nav className=" justify-center gap-x-10 lg:flex hidden">
+          <nav className=" hidden justify-center gap-x-10 lg:flex">
             {headerNavBarItems.map((headerItem) => (
               <Link
                 key={headerItem.title}
-                className="hover:text-primary font-bold transition ease-in-out delay-150 hover:-translate-y-1 "
+                className="font-bold transition delay-150 ease-in-out hover:-translate-y-1 hover:text-primary "
                 href={headerItem.href}
               >
                 {headerItem.title}
@@ -153,11 +153,8 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
             ))}
           </nav>
           <div className="">
-            <div className="lg:block hidden">
-              <RecipeButton
-                UIType="primary"
-                mainText="download app"
-              ></RecipeButton>
+            <div className="hidden lg:block">
+              <Button variant="primary">download app</Button>
             </div>
             <div
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -172,7 +169,7 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
       </header>
 
       {isMobileMenuOpen && (
-        <ul className="bg-white w-full h-full fixed overflow-hidden top-20 bottom-0 flex flex-col z-50 gap-y-3 pt-3 transition-transform">
+        <ul className="fixed bottom-0 top-20 z-50 flex h-full w-full flex-col gap-y-3 overflow-hidden bg-white pt-3 transition-transform">
           {headerNavBarItems.map((item) => (
             <Link key={item.title} href={item.href}>
               {" "}
@@ -180,23 +177,19 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
             </Link>
           ))}
           <div className="w-full p-4">
-            <RecipeButton
-              width="w-full"
-              UIType="primary"
-              mainText="download app"
-            ></RecipeButton>
+            <Button variant="primary">download app</Button>
           </div>
         </ul>
       )}
       <main className="mx-auto"> {children}</main>
-      <footer className="bg-white border-t  border-t-slate-300 pb-2">
+      <footer className="border-t border-t-slate-300  bg-white pb-2">
         <div className="mx-auto w-full max-w-screen-xl">
-          <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 px-4 py-6 md:grid-cols-4 lg:py-8">
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 Company
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium text-gray-500 dark:text-gray-400">
                 {footerCompanyItems.map((item) => (
                   <li key={item.title} className="mb-4">
                     <Link href={item.href} className=" hover:underline">
@@ -207,10 +200,10 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 Help center
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium text-gray-500 dark:text-gray-400">
                 {footerHelpCenter.map((item) => (
                   <li key={item.title} className="mb-4">
                     <Link href={item.href} className=" hover:underline">
@@ -221,10 +214,10 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 Legal
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium text-gray-500 dark:text-gray-400">
                 {footerLegal.map((item) => (
                   <li key={item.title} className="mb-4">
                     <Link href={item.href} className=" hover:underline">
@@ -235,10 +228,10 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 Download
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium text-gray-500 dark:text-gray-400">
                 {footerDownload.map((item) => (
                   <li key={item.title} className="mb-4">
                     <Link href={item.href} className=" hover:underline">
@@ -249,7 +242,7 @@ const PublicLayout = ({children}: {children: ReactNode}) => {
               </ul>
             </div>
           </div>
-          <div className="px-4 py-6 bg-gray-100 dark:bg-gray-700 text-white rounded-lg text-center">
+          <div className="rounded-lg bg-gray-100 px-4 py-6 text-center text-white dark:bg-gray-700">
             © 2023 FoodRecipe. All Rights Reserved.
           </div>
         </div>
