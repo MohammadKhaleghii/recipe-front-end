@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes } from "react";
 import { VariantProps } from "class-variance-authority";
 import { buttonVariant } from ".";
 

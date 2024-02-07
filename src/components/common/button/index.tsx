@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { ButtonProps } from "./button.interface";
-import clsx from "clsx";
 import { cva } from "class-variance-authority";
 import { cn } from "@/utilities/cn";
 

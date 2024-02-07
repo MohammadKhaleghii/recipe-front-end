@@ -1,6 +1,3 @@
-import { FC } from "react";
-import Link from "next/link";
-import { RecipeHit } from "@/api/dto/input/recipe-search";
 import Skeleton from "react-loading-skeleton";
 
 const RecipeItemSkeleton = () => {
