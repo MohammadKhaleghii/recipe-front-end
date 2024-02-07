@@ -5,6 +5,18 @@ To view the UI of this website, you can click on the following link:
 https://recipe-front-end-coral.vercel.app/
 
 
+## Technologies
+- React.JS
+- Next.JS
+- TypeScript
+- JSX
+- CSS
+- Emotion
+- Tailwind
+- Axios
+- PWA
+
+
 ## Naming Directories and Files
 
 Three types of case styles have been used in this project:
@@ -36,14 +48,5 @@ Three types of case styles have been used in this project:
 - **Services**: The services is a firestore config.
 
 
-## Technologies
-- React.JS
-- Next.JS
-- TypeScript
-- JSX
-- CSS
-- Emotion
-- Tailwind
-- Axios
 
 
