@@ -1,7 +1,12 @@
 import axiosInstance from "../axios-interceptor";
-import {RecipeSearchParams} from "../dto/output/recipe-search-params";
+import { RecipeSearchParams } from "../dto/output/recipe-search-params";
 
 export const getRecipeSearch = (params: RecipeSearchParams) =>
-  axiosInstance.get("api/recipes/v2", {params});
+  axiosInstance.get("api/recipes/v2", {
+    params,
+    paramsSerializer: {
+      indexes: null,
+    },
+  });
 export const getRecipeDetails = (recipeID: string, params: any) =>
-  axiosInstance.get(`/api/recipes/v2/${recipeID}`, {params});
+  axiosInstance.get(`/api/recipes/v2/${recipeID}`, { params });

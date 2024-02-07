@@ -2,7 +2,6 @@ import { RecipeSearch } from "@/api/dto/input/recipe-search";
 import { RecipeSearchParams } from "@/api/dto/output/recipe-search-params";
 import { getRecipeSearch } from "@/api/lib/recipes";
 import { Button } from "@/components/common/button";
-// import RecipeButton from "@/components/common/button";
 import { Input } from "@/components/common/input";
 import RecipeItem from "@/components/recipe-item";
 import RecipeItemSkeleton from "@/components/recipe-item/recipe-item-skeleton";
@@ -10,10 +9,26 @@ import { MenuContext } from "@/contexts/menu-provider";
 import PublicLayout from "@/layouts/public-layout";
 import { Global, css } from "@emotion/react";
 import { useRouter } from "next/router";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import {
+  ReactElement,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 const RecipeSearchPage = () => {
   const router = useRouter();
+  const muckArrayForSkeleton = new Array(9).fill(0);
+
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "any",
+    q: router.query.q?.toString() ?? "",
+  };
+
   const [loading, setLoading] = useState<boolean>(true);
   const { isMobileFilterMenuOpen, setIsMobileFilterMenuOpen } =
     useContext(MenuContext);
@@ -28,35 +43,41 @@ const RecipeSearchPage = () => {
     router.query.q?.toString() ?? "",
   );
 
-  const muckArrayForSkeleton = new Array(9).fill(0);
+  useLayoutEffect(() => {
+    const cuisineTypeParam =
+      router.query.cuisineType &&
+      router.query.cuisineType?.toString().split(",");
+    const healthParam =
+      router.query.health && router.query.health?.toString().split(",");
+    const dietParam =
+      router.query.diet && router.query.diet?.toString().split(",");
+    if (cuisineTypeParam) {
+      setSelectedCuisineTypeFilter(cuisineTypeParam);
+      searchParams.cuisineType = cuisineTypeParam;
+    }
+    if (healthParam) {
+      setSelectedHealthFilter(healthParam);
+      searchParams.health = healthParam;
+    }
+    if (dietParam) {
+      setSelectedDietFilter(dietParam);
+      searchParams.diet = dietParam;
+    }
+  }, [router.query]);
+
   useEffect(() => {
-    const searchParams: RecipeSearchParams = {
-      beta: false,
-      imageSize: "LARGE",
-      type: "any",
-      diet: "balanced",
-      q: router.query.q?.toString() ?? "",
-    };
-    // if (true) {
-    //   const diet = router.query.diet?.toString().split(",");
-    //   console.log(diet);
-    //   searchParams.diet = diet;
-    // }
-    setLoading(true);
-    getRecipeSearch(searchParams)
-      .then(({ data }) => {
-        const recipeItemsTenFirstItems = data.hits.slice(0, 41);
-        const recipe: RecipeSearch = {
-          ...data,
-          hits: recipeItemsTenFirstItems,
-        };
-        setRecipeSearchItems(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
+    if (router.query) {
+      setLoading(true);
+      getRecipeSearch(searchParams)
+        .then(({ data }) => {
+          setRecipeSearchItems(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("Server error! please refresh this page");
+        });
+    }
   }, [router.query]);
   const sidebarFilters = [
     {
