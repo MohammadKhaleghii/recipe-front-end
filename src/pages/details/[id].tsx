@@ -35,7 +35,6 @@ const RecipeDetails = () => {
     setRecipeDetailsLoading(true);
     const searchParams: RecipeSearchParams = {
       beta: false,
-      diet: "balanced",
       imageSize: "LARGE",
       type: "public",
     };
