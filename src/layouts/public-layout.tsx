@@ -1,5 +1,5 @@
 import { Button } from "@/components/common/button";
-import LoadingSpinner from "@/components/common/loading-spiner";
+import LoadingSpinner from "@/components/common/loading-spinner";
 import { MenuContext } from "@/contexts/menu-provider";
 import { Global, css } from "@emotion/react";
 import Link from "next/link";
