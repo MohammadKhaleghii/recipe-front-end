@@ -17,7 +17,6 @@ export default function Home() {
   useEffect(() => {
     const searchParams: RecipeSearchParams = {
       beta: false,
-      diet: "balanced",
       imageSize: "LARGE",
       type: "public",
     };
@@ -45,6 +44,7 @@ export default function Home() {
             <Input
               variants="primary"
               className="w-full"
+              value={searchedQuery}
               onChange={(event) => setSetSearchedQuery(event.target.value)}
               width="w-full"
               placeholder="Enter your title"
