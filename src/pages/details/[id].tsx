@@ -31,14 +31,14 @@ const RecipeDetails = () => {
     query: { id },
   } = useRouter();
   const recipeID = id?.toString() ?? "";
-
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "public",
+  };
   useEffect(() => {
     setRecipeDetailsLoading(true);
-    const searchParams: RecipeSearchParams = {
-      beta: false,
-      imageSize: "LARGE",
-      type: "public",
-    };
+
     if (recipeID) {
       getRecipeDetails(recipeID, searchParams)
         .then(({ data }) => {
@@ -50,6 +50,9 @@ const RecipeDetails = () => {
           setRecipeDetailsLoading(false);
         });
     }
+  }, [recipeID]);
+
+  useEffect(() => {
     setRelatedRecipeLoading(true);
     getRecipeSearch(searchParams)
       .then(({ data }) => {
@@ -78,7 +81,7 @@ const RecipeDetails = () => {
         console.error(error);
         toast.error("Server error! please refresh this page");
       });
-  }, [recipeID]);
+  }, []);
   return (
     <div className="mx-auto w-full max-w-screen-xl px-4 py-4">
       <div className="flex flex-col gap-x-4 lg:flex-row">
