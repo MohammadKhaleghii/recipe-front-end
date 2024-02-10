@@ -5,6 +5,13 @@ import { Global, css } from "@emotion/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode, useContext, useEffect, useState } from "react";
+import {
+  footerCompanyItems,
+  footerDownload,
+  footerHelpCenter,
+  footerLegal,
+  headerNavBarItems,
+} from "./constants";
 
 const PublicLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -32,93 +39,6 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
     setIsMobileMenuOpen(false);
   }, [router.asPath]);
 
-  const headerNavBarItems = [
-    {
-      title: "Home",
-      href: "/",
-    },
-    {
-      title: "Search",
-      href: "/search",
-    },
-    {
-      title: "About",
-      href: "https://anothermohammad.ir/",
-    },
-    {
-      title: "Contact",
-      href: "/contact",
-    },
-  ];
-  const footerCompanyItems = [
-    {
-      title: "About",
-      href: "https://anothermohammad.ir/",
-    },
-    {
-      title: "Contact",
-      href: "/contact",
-    },
-    {
-      title: "Brand Center",
-      href: "/brand-center",
-    },
-    {
-      title: "Blog",
-      href: "/blog",
-    },
-  ];
-  const footerHelpCenter = [
-    {
-      title: "Discord Server",
-      href: "#",
-    },
-    {
-      title: "Twitter",
-      href: "#",
-    },
-    {
-      title: "Facebook",
-      href: "#",
-    },
-    {
-      title: "Contact Us",
-      href: "#",
-    },
-  ];
-  const footerLegal = [
-    {
-      title: "Privacy Policy",
-      href: "#",
-    },
-    {
-      title: "Licensing",
-      href: "#",
-    },
-
-    {
-      title: "Terms & Conditions",
-      href: "#",
-    },
-  ];
-  const footerDownload = [
-    {
-      title: "iOS",
-      href: "#",
-    },
-    {
-      title: "Android",
-      href: "#",
-    },
-    {
-      title: "Windows",
-      href: "#",
-    },
-    {
-      title: "MacOS",
-      href: "#",
-    },
-  ];
   const updateBodyStyle = () => {
     if (isMobileMenuOpen) {
       return css`
