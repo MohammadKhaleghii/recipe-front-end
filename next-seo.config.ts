@@ -1,4 +1,6 @@
 const SEO = {
+  noindex: false,
+  nofollow: false,
   openGraph: {
     type: "website",
     locale: "en_IE",
