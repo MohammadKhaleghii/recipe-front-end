@@ -1,0 +1,76 @@
+export const sidebarFilters = [
+  {
+    title: "Diet",
+    key: 1,
+    children: [
+      {
+        title: "balanced",
+        key: "balanced",
+      },
+      {
+        title: "High Fiber",
+        key: "high-fiber",
+      },
+      {
+        title: "High Protein",
+        key: "high-protein",
+      },
+      {
+        title: "Low Carbohydrates",
+        key: "low-carb",
+      },
+    ],
+  },
+  {
+    title: "Health",
+    key: 2,
+    children: [
+      {
+        title: "alcohol-cocktail",
+        key: "alcohol-cocktail",
+      },
+      {
+        title: "Alcohol Free",
+        key: "alcohol-free",
+      },
+      {
+        title: "Celery Free",
+        key: "celery-free",
+      },
+      {
+        title: "Crustacean Free",
+        key: "crustacean-free",
+      },
+      {
+        title: "Dairy Free",
+        key: "dairy-free",
+      },
+    ],
+  },
+  {
+    title: "Cuisine Type",
+    key: 3,
+    children: [
+      {
+        title: "American",
+        key: "American",
+      },
+      {
+        title: "Asian",
+        key: "Asian",
+      },
+      {
+        title: "British",
+        key: "British",
+      },
+      {
+        title: "Caribbean",
+        key: "Caribbean",
+      },
+      {
+        title: "Central Europe",
+        key: "Central Europe",
+      },
+    ],
+  },
+];
