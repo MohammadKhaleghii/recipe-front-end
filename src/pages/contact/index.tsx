@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import toast, { Toaster } from "react-hot-toast";
-import { ReactElement, ReactNode } from "react";
+import toast from "react-hot-toast";
+import { ReactElement } from "react";
 import PublicLayout from "@/layouts/public-layout";
 import { Button } from "@/components/common/button";
 import { Input } from "@/components/common/input";
