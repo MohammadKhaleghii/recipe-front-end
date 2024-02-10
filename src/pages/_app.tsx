@@ -7,6 +7,8 @@ import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 import MenuProvider from "@/contexts/menu-provider";
 import { Toaster } from "react-hot-toast";
+import { DefaultSeo } from "next-seo";
+import SEO from "../../next-seo.config";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -19,6 +21,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
+      <DefaultSeo {...SEO} />
       <Toaster />
       <MenuProvider>{getLayout(<Component {...pageProps} />)}</MenuProvider>
     </>
