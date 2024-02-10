@@ -18,6 +18,7 @@ import {
   useState,
 } from "react";
 import sidebarFilters from "./constants.json";
+import { NextSeo } from "next-seo";
 
 const RecipeSearchPage = () => {
   const router = useRouter();
@@ -251,38 +252,59 @@ const RecipeSearchPage = () => {
     }
   };
 
+  const searchPageURl = `https://recipe-front-end-coral.vercel.app/search`;
+  const seoTitle = "Food recipe search page";
+  const metaDescription =
+    "find your favorite recipe in a minute in our website - Food Recipe ";
   return (
-    <div className="mx-auto my-10 flex w-full max-w-screen-xl flex-row justify-around gap-x-3 px-4 lg:justify-between">
-      <Global styles={updateBodyStyle()} />
-      <section className="hidden h-full rounded-md  border border-gray-300 p-2  lg:block lg:w-1/4">
-        {filter}
-      </section>
-      <section className="w-full lg:w-3/4">
-        <div
-          onClick={() => setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen)}
-          className=" flex flex-row  items-center gap-x-2  lg:hidden"
-        >
-          <i className="fa-regular fa-filter text-lg"></i>
-          <button className="my-4 text-xl font-bold">Filters</button>
-        </div>
-        <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-3  lg:justify-between">
-          {!loading &&
-            recipeSearchItems &&
-            recipeSearchItems.hits.map(({ recipe, _links }) => (
-              <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
-            ))}
-          {loading &&
-            muckArrayForSkeleton.map((item, index) => (
-              <RecipeItemSkeleton key={index} />
-            ))}
-        </div>
-      </section>
-      {isMobileFilterMenuOpen && (
-        <section className="fixed bottom-0 z-50 h-full w-full overflow-y-scroll rounded-e-md bg-white p-4">
+    <>
+      <NextSeo
+        title={seoTitle}
+        description={metaDescription}
+        canonical={searchPageURl}
+        openGraph={{
+          title: seoTitle,
+          description: metaDescription,
+          siteName: "Food Recipe",
+          url: searchPageURl,
+        }}
+      />
+      <div className="mx-auto my-10 flex w-full max-w-screen-xl flex-row justify-around gap-x-3 px-4 lg:justify-between">
+        <Global styles={updateBodyStyle()} />
+        <section className="hidden h-full rounded-md  border border-gray-300 p-2  lg:block lg:w-1/4">
           {filter}
         </section>
-      )}
-    </div>
+        <section className="w-full lg:w-3/4">
+          <div
+            onClick={() => setIsMobileFilterMenuOpen(!isMobileFilterMenuOpen)}
+            className=" flex flex-row  items-center gap-x-2  lg:hidden"
+          >
+            <i className="fa-regular fa-filter text-lg"></i>
+            <button className="my-4 text-xl font-bold">Filters</button>
+          </div>
+          <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-3  lg:justify-between">
+            {!loading &&
+              recipeSearchItems &&
+              recipeSearchItems.hits.map(({ recipe, _links }) => (
+                <RecipeItem
+                  key={recipe.label}
+                  _links={_links}
+                  recipe={recipe}
+                />
+              ))}
+            {loading &&
+              muckArrayForSkeleton.map((item, index) => (
+                <RecipeItemSkeleton key={index} />
+              ))}
+          </div>
+        </section>
+        {isMobileFilterMenuOpen && (
+          <section className="fixed bottom-0 z-50 h-full w-full overflow-y-scroll rounded-e-md bg-white p-4">
+            {filter}
+          </section>
+        )}
+      </div>
+    </>
   );
 };
 

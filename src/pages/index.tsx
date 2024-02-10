@@ -8,6 +8,7 @@ import RecipeItemSkeleton from "@/components/others/recipe-item/recipe-item-skel
 import PublicLayout from "@/layouts/public-layout";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
+import { NextSeo } from "next-seo";
 
 export default function Home() {
   const router = useRouter();
@@ -33,8 +34,24 @@ export default function Home() {
         console.error(error);
       });
   }, []);
+  const searchPageURl = `https://recipe-front-end-coral.vercel.app/`;
+  const seoTitle = "Food recipe";
+  const metaDescription =
+    "find your favorite recipe in a minute in our website - Food Recipe ";
+
   return (
     <>
+      <NextSeo
+        title={seoTitle}
+        description={metaDescription}
+        canonical={searchPageURl}
+        openGraph={{
+          title: seoTitle,
+          description: metaDescription,
+          siteName: "Food Recipe",
+          url: searchPageURl,
+        }}
+      />
       <section className="flex h-[350px] items-center justify-center bg-secondary lg:h-[450px]">
         <div className="mx-2 flex h-1/2 w-full flex-col justify-center rounded-lg bg-white p-4 md:w-[90%] lg:mx-0 lg:w-1/2 ">
           <div className="pb-3 text-xl font-bold text-gray-200 lg:text-3xl">
