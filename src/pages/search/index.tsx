@@ -17,7 +17,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
-import { sidebarFilters } from "./constants";
+import sidebarFilters from "./constants.json";
 
 const RecipeSearchPage = () => {
   const router = useRouter();
