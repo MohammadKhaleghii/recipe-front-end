@@ -19,17 +19,16 @@ import {
 } from "react";
 import sidebarFilters from "./constants.json";
 import { NextSeo } from "next-seo";
+import { GetServerSidePropsContext } from "next";
 
-const RecipeSearchPage = () => {
+const RecipeSearchPage = ({
+  recipeSearchItems,
+}: {
+  recipeSearchItems: RecipeSearch;
+}) => {
+  console.log(recipeSearchItems);
   const router = useRouter();
   const muckArrayForSkeleton = new Array(9).fill(0);
-
-  const searchParams: RecipeSearchParams = {
-    beta: false,
-    imageSize: "LARGE",
-    type: "any",
-    q: router.query.q?.toString() ?? "",
-  };
 
   const [loading, setLoading] = useState<boolean>(true);
   const { isMobileFilterMenuOpen, setIsMobileFilterMenuOpen } =
@@ -40,10 +39,13 @@ const RecipeSearchPage = () => {
     string[]
   >([]);
 
-  const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
   const [searchedQuery, setSearchedQuery] = useState(
     router.query.q?.toString() ?? "",
   );
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useLayoutEffect(() => {
     const cuisineTypeParam =
@@ -55,30 +57,12 @@ const RecipeSearchPage = () => {
       router.query.diet && router.query.diet?.toString().split(",");
     if (cuisineTypeParam) {
       setSelectedCuisineTypeFilter(cuisineTypeParam);
-      searchParams.cuisineType = cuisineTypeParam;
     }
     if (healthParam) {
       setSelectedHealthFilter(healthParam);
-      searchParams.health = healthParam;
     }
     if (dietParam) {
       setSelectedDietFilter(dietParam);
-      searchParams.diet = dietParam;
-    }
-  }, [router.query]);
-
-  useEffect(() => {
-    if (router.query) {
-      setLoading(true);
-      getRecipeSearch(searchParams)
-        .then(({ data }) => {
-          setRecipeSearchItems(data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          toast.error("Server error! please refresh this page");
-        });
     }
   }, [router.query]);
 
@@ -260,6 +244,8 @@ const RecipeSearchPage = () => {
     <>
       <NextSeo
         title={seoTitle}
+        noindex={Object.keys(router.query).length > 0}
+        nofollow={Object.keys(router.query).length > 0}
         description={metaDescription}
         canonical={searchPageURl}
         openGraph={{
@@ -282,6 +268,13 @@ const RecipeSearchPage = () => {
             <i className="fa-regular fa-filter text-lg"></i>
             <button className="my-4 text-xl font-bold">Filters</button>
           </div>
+          {recipeSearchItems.hits.length === 0 && (
+            <div className="text-center text-xl font-bold text-red-500">
+              No data found
+              <br />
+              Please change your filter
+            </div>
+          )}
           <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-3  lg:justify-between">
             {!loading &&
               recipeSearchItems &&
@@ -292,6 +285,7 @@ const RecipeSearchPage = () => {
                   recipe={recipe}
                 />
               ))}
+
             {loading &&
               muckArrayForSkeleton.map((item, index) => (
                 <RecipeItemSkeleton key={index} />
@@ -313,3 +307,44 @@ RecipeSearchPage.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default RecipeSearchPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  let recipeSearchItems: RecipeSearch | null = null;
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "any",
+    q: context.query.q?.toString() ?? "",
+  };
+  const cuisineTypeParam =
+    context.query.cuisineType &&
+    context.query.cuisineType?.toString().split(",");
+  const healthParam =
+    context.query.health && context.query.health?.toString().split(",");
+  const dietParam =
+    context.query.diet && context.query.diet?.toString().split(",");
+  if (cuisineTypeParam) {
+    searchParams.cuisineType = cuisineTypeParam;
+  }
+  if (healthParam) {
+    searchParams.health = healthParam;
+  }
+  if (dietParam) {
+    searchParams.diet = dietParam;
+  }
+  await getRecipeSearch(searchParams)
+    .then(({ data }) => {
+      recipeSearchItems = data;
+    })
+    .catch((error) => {
+      console.error(error);
+      toast.error("Server error! please refresh this page");
+    });
+  return {
+    props: {
+      recipeSearchItems,
+    },
+  };
+};
