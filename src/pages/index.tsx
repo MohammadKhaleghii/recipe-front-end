@@ -10,34 +10,20 @@ import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { NextSeo } from "next-seo";
 
-export default function Home() {
+export default function Home({ recipe }: { recipe: RecipeSearch | null }) {
   const router = useRouter();
-  const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
-  const [searchedQuery, setSetSearchedQuery] = useState<string>("");
-  const muckArrayForSkeleton = new Array(8).fill(0);
-  useEffect(() => {
-    const searchParams: RecipeSearchParams = {
-      beta: false,
-      imageSize: "LARGE",
-      type: "public",
-    };
-    getRecipeSearch(searchParams)
-      .then(({ data }) => {
-        const recipeItemsTenFirstItems = data.hits.slice(0, 12);
-        const recipe: RecipeSearch = {
-          ...data,
-          hits: recipeItemsTenFirstItems,
-        };
-        setRecipeSearchItems(recipe);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
   const searchPageURl = `https://recipe-front-end-coral.vercel.app/`;
   const seoTitle = "Food recipe";
   const metaDescription =
     "find your favorite recipe in a minute in our website - Food Recipe ";
+
+  const [searchedQuery, setSetSearchedQuery] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const muckArrayForSkeleton = new Array(8).fill(0);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   return (
     <>
@@ -79,11 +65,16 @@ export default function Home() {
       </section>
       <section className="mx-auto w-full max-w-screen-xl px-4 py-10 ">
         <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-4  lg:justify-between">
-          {recipeSearchItems &&
-            recipeSearchItems.hits.map(({ recipe, _links }) => (
+          {recipe ? (
+            recipe.hits.map(({ recipe, _links }) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
-            ))}
-          {!recipeSearchItems &&
+            ))
+          ) : (
+            <div className="py-10 text-center text-2xl text-red-500 ">
+              Server Error
+            </div>
+          )}
+          {loading &&
             muckArrayForSkeleton.map((item, index) => (
               <RecipeItemSkeleton key={index} />
             ))}
@@ -95,4 +86,29 @@ export default function Home() {
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
+};
+
+export const getServerSideProps = async () => {
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "public",
+  };
+  let recipes: RecipeSearch | null = null;
+  await getRecipeSearch(searchParams)
+    .then(({ data }) => {
+      const recipeItemsTenFirstItems = data.hits.slice(0, 30);
+      recipes = {
+        ...data,
+        hits: recipeItemsTenFirstItems,
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  return {
+    props: {
+      recipe: recipes,
+    },
+  };
 };
