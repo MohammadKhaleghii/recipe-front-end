@@ -13,17 +13,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { toast } from "react-hot-toast";
 import { NextSeo } from "next-seo";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-const RecipeDetails = () => {
+const RecipeDetails = ({
+  recipeDetails,
+  relatedRecipe,
+  latestRecipe,
+}: {
+  recipeDetails: RecipeDetailsInput;
+  relatedRecipe: RecipeSearch;
+  latestRecipe: RecipeSearch;
+}) => {
   const [recipeDetailsLoading, setRecipeDetailsLoading] =
     useState<boolean>(true);
   const [relatedRecipeLoading, setRelatedRecipeLoading] =
     useState<boolean>(true);
-  const [recipeDetails, setRecipeDetails] = useState<RecipeDetailsInput>();
-  const [relatedRecipe, setRelatedRecipe] = useState<RecipeSearch>();
-  const [latestRecipe, setLatestRecipe] = useState<RecipeSearch>();
+
   const ingredientsSkeletonArray = new Array(3).fill(0);
   const relatedRecipeSkeletonArray = new Array(4).fill(0);
   const latestRecipeSkeletonArray = new Array(4).fill(0);
@@ -31,60 +37,16 @@ const RecipeDetails = () => {
   const {
     query: { id },
   } = useRouter();
-  const recipeID = id?.toString() ?? "";
-  const searchParams: RecipeSearchParams = {
-    beta: false,
-    imageSize: "LARGE",
-    type: "public",
-  };
+
   const detailsPageURL = `https://recipe-front-end-coral.vercel.app/details/${id}`;
-  useEffect(() => {
-    setRecipeDetailsLoading(true);
-
-    if (recipeID) {
-      getRecipeDetails(recipeID, searchParams)
-        .then(({ data }) => {
-          setRecipeDetails(data);
-          setRecipeDetailsLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setRecipeDetailsLoading(false);
-        });
-    }
-  }, [recipeID]);
 
   useEffect(() => {
-    setRelatedRecipeLoading(true);
-    getRecipeSearch(searchParams)
-      .then(({ data }) => {
-        const latestRecipeItems = data.hits.slice(
-          data.hits.length - 4,
-          data.hits.length,
-        );
-        const latestRecipeItemsCopy: RecipeSearch = {
-          ...data,
-          hits: latestRecipeItems,
-        };
-        setLatestRecipe(latestRecipeItemsCopy);
-
-        const relatedRecipe = data.hits.slice(
-          data.hits.length - 4,
-          data.hits.length,
-        );
-        const relatedRecipeCopy: RecipeSearch = {
-          ...data,
-          hits: relatedRecipe,
-        };
-        setRelatedRecipe(relatedRecipeCopy);
-        setRelatedRecipeLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Server error! please refresh this page");
-      });
+    setRecipeDetailsLoading(false);
+    setRelatedRecipeLoading(false);
   }, []);
+
   const title = recipeDetails?.recipe.label;
+
   return (
     <>
       <NextSeo
@@ -296,4 +258,70 @@ export default RecipeDetails;
 
 RecipeDetails.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
+};
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+  response: GetServerSideProps,
+) => {
+  const { id } = context.query;
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "public",
+  };
+  let recipeDetails: RecipeDetailsInput | null = null;
+  let latestRecipe: RecipeSearch | null = null;
+  let relatedRecipe: RecipeSearch | null = null;
+  let rejectStatusCode = 200;
+  const recipeID = id?.toString() ?? "";
+  await getRecipeDetails(recipeID, searchParams)
+    .then(({ data }) => {
+      recipeDetails = data;
+    })
+    .catch((error) => {
+      console.error(error);
+
+      rejectStatusCode = error.response.status;
+    });
+
+  if (recipeDetails) {
+    await getRecipeSearch(searchParams)
+      .then(({ data }) => {
+        const latestRecipeItems = data.hits.slice(
+          data.hits.length - 4,
+          data.hits.length,
+        );
+        const latestRecipeItemsCopy: RecipeSearch = {
+          ...data,
+          hits: latestRecipeItems,
+        };
+        latestRecipe = latestRecipeItemsCopy;
+
+        const relatedRecipeHits = data.hits.slice(
+          data.hits.length - 4,
+          data.hits.length,
+        );
+        const relatedRecipeCopy: RecipeSearch = {
+          ...data,
+          hits: relatedRecipeHits,
+        };
+        relatedRecipe = relatedRecipeCopy;
+      })
+      .catch((error) => {});
+
+    return {
+      props: {
+        recipeDetails,
+        relatedRecipe,
+        latestRecipe,
+      },
+    };
+  } else {
+    if (rejectStatusCode === 404) {
+      return {
+        notFound: true,
+      };
+    }
+  }
 };
