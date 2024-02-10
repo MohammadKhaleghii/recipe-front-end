@@ -8,33 +8,36 @@ import RecipeItemSkeleton from "@/components/others/recipe-item/recipe-item-skel
 import PublicLayout from "@/layouts/public-layout";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
+import { NextSeo } from "next-seo";
 
-export default function Home() {
+export default function Home({ recipe }: { recipe: RecipeSearch | null }) {
   const router = useRouter();
-  const [recipeSearchItems, setRecipeSearchItems] = useState<RecipeSearch>();
+  const searchPageURl = `https://recipe-front-end-coral.vercel.app/`;
+  const seoTitle = "Food recipe";
+  const metaDescription =
+    "find your favorite recipe in a minute in our website - Food Recipe ";
+
   const [searchedQuery, setSetSearchedQuery] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const muckArrayForSkeleton = new Array(8).fill(0);
+
   useEffect(() => {
-    const searchParams: RecipeSearchParams = {
-      beta: false,
-      imageSize: "LARGE",
-      type: "public",
-    };
-    getRecipeSearch(searchParams)
-      .then(({ data }) => {
-        const recipeItemsTenFirstItems = data.hits.slice(0, 12);
-        const recipe: RecipeSearch = {
-          ...data,
-          hits: recipeItemsTenFirstItems,
-        };
-        setRecipeSearchItems(recipe);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    setLoading(false);
   }, []);
+
   return (
     <>
+      <NextSeo
+        title={seoTitle}
+        description={metaDescription}
+        canonical={searchPageURl}
+        openGraph={{
+          title: seoTitle,
+          description: metaDescription,
+          siteName: "Food Recipe",
+          url: searchPageURl,
+        }}
+      />
       <section className="flex h-[350px] items-center justify-center bg-secondary lg:h-[450px]">
         <div className="mx-2 flex h-1/2 w-full flex-col justify-center rounded-lg bg-white p-4 md:w-[90%] lg:mx-0 lg:w-1/2 ">
           <div className="pb-3 text-xl font-bold text-gray-200 lg:text-3xl">
@@ -62,11 +65,16 @@ export default function Home() {
       </section>
       <section className="mx-auto w-full max-w-screen-xl px-4 py-10 ">
         <div className="grid w-full grid-cols-2 items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-4  lg:justify-between">
-          {recipeSearchItems &&
-            recipeSearchItems.hits.map(({ recipe, _links }) => (
+          {recipe ? (
+            recipe.hits.map(({ recipe, _links }) => (
               <RecipeItem key={recipe.label} _links={_links} recipe={recipe} />
-            ))}
-          {!recipeSearchItems &&
+            ))
+          ) : (
+            <div className="py-10 text-center text-2xl text-red-500 ">
+              Server Error
+            </div>
+          )}
+          {loading &&
             muckArrayForSkeleton.map((item, index) => (
               <RecipeItemSkeleton key={index} />
             ))}
@@ -78,4 +86,29 @@ export default function Home() {
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
+};
+
+export const getServerSideProps = async () => {
+  const searchParams: RecipeSearchParams = {
+    beta: false,
+    imageSize: "LARGE",
+    type: "public",
+  };
+  let recipes: RecipeSearch | null = null;
+  await getRecipeSearch(searchParams)
+    .then(({ data }) => {
+      const recipeItemsTenFirstItems = data.hits.slice(0, 30);
+      recipes = {
+        ...data,
+        hits: recipeItemsTenFirstItems,
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  return {
+    props: {
+      recipe: recipes,
+    },
+  };
 };
