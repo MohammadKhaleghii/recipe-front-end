@@ -11,6 +11,8 @@ const buttonVariant = cva(
         primary:
           "bg-gradient-to-r from-[#FF7A7A] from to-[#F65900] text-white bg-gradient-to-l hover:from-[#F65900]  hover:to-[#FF7A7A] hover:text-white",
         secondary: "border border-red-400",
+        tertiary:
+          "p-2 w-fit text-xs font-bold text-primary transition delay-100 hover:bg-secondary hover:text-white",
       },
     },
   },
