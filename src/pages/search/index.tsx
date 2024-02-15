@@ -145,14 +145,18 @@ const RecipeSearchPage = ({
     });
   };
 
+  const currentPagePath = `/search`;
   const filter = (
     <>
       {" "}
       <div className="flex items-center justify-between border-b border-gray-100 pb-1">
         <h3 className="text-lg font-bold">Filters</h3>
-        <button className="rounded-lg p-2 text-xs font-bold text-primary transition delay-100 hover:bg-secondary hover:text-white">
+        <Button
+          onClick={() => router.push(currentPagePath)}
+          variant={"tertiary"}
+        >
           Remove
-        </button>
+        </Button>
       </div>
       <div className="py-5">
         <span className="pb-3 font-bold">search:</span>
@@ -164,18 +168,6 @@ const RecipeSearchPage = ({
             placeholder="search by...."
             value={searchedQuery}
           />
-          <button
-            onClick={() =>
-              router.push({
-                query: {
-                  q: searchedQuery,
-                },
-              })
-            }
-            className="rounded-md bg-primary px-3 py-2"
-          >
-            <i className=" fas fa-search cursor-pointer text-white"></i>
-          </button>
         </div>
         <div>
           {sidebarFilters.map((sidebarItem) => (
