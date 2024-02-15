@@ -25,7 +25,7 @@ const RecipeItem: FC<RecipeHit> = ({ _links, recipe }) => {
         className="relative w-full rounded-md transition-all duration-300 hover:blur-sm"
       />
 
-      <div className="group absolute h-full w-full rounded-lg bg-gradient-to-t  from-black  to-white opacity-65 "></div>
+      <div className="group absolute h-full w-full rounded-lg bg-gradient-to-t  from-black   opacity-65 "></div>
       <h3 className=" absolute bottom-5 left-3 px-2 pt-3 text-left text-base font-bold text-white transition ease-in-out group-hover:-translate-y-3 lg:text-xl">
         <Link href={path}>{recipe.label}</Link>
         <div className="hidden gap-x-3 group-hover:flex">
