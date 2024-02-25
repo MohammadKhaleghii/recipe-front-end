@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { ButtonProps } from "./button.interface";
 import { cva } from "class-variance-authority";
+
+import { ButtonProps } from "./button.interface";
 import { cn } from "@/utilities/cn";
 
 const buttonVariant = cva(
