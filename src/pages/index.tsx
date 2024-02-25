@@ -75,7 +75,7 @@ export default function Home({ recipe }: { recipe: RecipeSearch | null }) {
             </div>
           )}
           {loading &&
-            muckArrayForSkeleton.map((item, index) => (
+            muckArrayForSkeleton.map((_, index) => (
               <RecipeItemSkeleton key={index} />
             ))}
         </div>
