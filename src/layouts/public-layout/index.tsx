@@ -33,7 +33,7 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
       router.events.off("routeChangeComplete", handleComplete);
       router.events.off("routeChangeError", handleComplete);
     };
-  }, []);
+  });
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
